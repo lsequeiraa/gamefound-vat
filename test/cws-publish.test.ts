@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { createVerify, generateKeyPairSync } from "node:crypto";
-import { accessToken, tokenAssertion, uploadAndPublish } from "../scripts/cws-publish";
+import { accessToken, itemStatus, tokenAssertion, uploadAndPublish } from "../scripts/cws-publish";
 
 const { privateKey, publicKey } = generateKeyPairSync("rsa", { modulusLength: 2048 });
 const account = {
@@ -33,6 +33,19 @@ function fakeFetch(responses: Array<[number, unknown]>) {
   };
   return { fetchFn, requests };
 }
+
+test("itemStatus summarises the published and submitted revisions", async () => {
+  const { fetchFn, requests } = fakeFetch([
+    [200, { submittedItemRevisionStatus: { state: "PENDING_REVIEW", distributionChannels: [{ crxVersion: "1.0.0" }] } }],
+  ]);
+  expect(await itemStatus("t", "pub", "item", fetchFn)).toEqual({
+    published: "none",
+    submitted: "PENDING_REVIEW (1.0.0)",
+    takenDown: false,
+    warned: false,
+  });
+  expect(requests).toEqual([{ url: "https://chromewebstore.googleapis.com/v2/publishers/pub/items/item:fetchStatus", method: "GET" }]);
+});
 
 test("accessToken exchanges the assertion", async () => {
   const { fetchFn, requests } = fakeFetch([[200, { access_token: "ya29.token" }]]);

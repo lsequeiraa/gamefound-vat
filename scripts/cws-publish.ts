@@ -6,6 +6,7 @@
 //   CWS_ITEM_ID               the extension's item ID in the store
 //
 //   bun run scripts/cws-publish.ts artifacts/gamefound-vat-1.0.1-chrome.zip
+//   bun run scripts/cws-publish.ts --status     (read-only: checks the credentials)
 import { createSign } from "node:crypto";
 
 const API = "https://chromewebstore.googleapis.com";
@@ -94,13 +95,31 @@ export async function uploadAndPublish(opts: PublishOptions): Promise<string> {
   return published.state;
 }
 
+/** Read-only: the item's published and submitted versions. */
+export async function itemStatus(token: string, publisherId: string, itemId: string, fetchFn: Fetch = fetch) {
+  const url = `${API}/v2/publishers/${publisherId}/items/${itemId}:fetchStatus`;
+  const status = await json(await fetchFn(url, { headers: { Authorization: `Bearer ${token}` } }), "Status");
+  const describe = (rev: any) =>
+    rev ? `${rev.state} (${(rev.distributionChannels ?? []).map((c: any) => c.crxVersion).join(", ") || "no version"})` : "none";
+  return {
+    published: describe(status.publishedItemRevisionStatus),
+    submitted: describe(status.submittedItemRevisionStatus),
+    takenDown: Boolean(status.takenDown),
+    warned: Boolean(status.warned),
+  };
+}
+
 if (import.meta.main) {
-  const [zipPath] = process.argv.slice(2);
+  const [arg] = process.argv.slice(2);
   const { CWS_SERVICE_ACCOUNT_JSON, CWS_PUBLISHER_ID, CWS_ITEM_ID } = process.env;
-  if (!zipPath || !CWS_SERVICE_ACCOUNT_JSON || !CWS_PUBLISHER_ID || !CWS_ITEM_ID) {
-    console.error("usage: CWS_SERVICE_ACCOUNT_JSON=… CWS_PUBLISHER_ID=… CWS_ITEM_ID=… bun run scripts/cws-publish.ts <zip>");
+  if (!arg || !CWS_SERVICE_ACCOUNT_JSON || !CWS_PUBLISHER_ID || !CWS_ITEM_ID) {
+    console.error("usage: CWS_SERVICE_ACCOUNT_JSON=… CWS_PUBLISHER_ID=… CWS_ITEM_ID=… bun run scripts/cws-publish.ts <zip | --status>");
     process.exit(2);
   }
   const token = await accessToken(JSON.parse(CWS_SERVICE_ACCOUNT_JSON));
-  await uploadAndPublish({ token, publisherId: CWS_PUBLISHER_ID, itemId: CWS_ITEM_ID, zip: Bun.file(zipPath) });
+  if (arg === "--status") {
+    console.log(await itemStatus(token, CWS_PUBLISHER_ID, CWS_ITEM_ID));
+  } else {
+    await uploadAndPublish({ token, publisherId: CWS_PUBLISHER_ID, itemId: CWS_ITEM_ID, zip: Bun.file(arg) });
+  }
 }
