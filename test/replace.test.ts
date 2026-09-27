@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test } from "bun:test";
 import { ensureNote, noteText } from "../src/note";
 import { findProjectId, isExcludedPage } from "../src/page";
-import type { Resolution, Vat } from "../src/rate";
+import type { Vat } from "../src/rate";
 import { PriceReplacer, productIdFor, type ReplacerOptions } from "../src/replace";
 
 const page = await Bun.file(new URL("./fixtures/rewards-page.html", import.meta.url)).text();
@@ -10,7 +10,14 @@ const text = (selector: string) =>
   [...document.querySelectorAll(selector)].map((e) => e.textContent?.trim().replace(/\s+/g, " "));
 
 function replacer(opts: Partial<ReplacerOptions> = {}) {
-  return new PriceReplacer(document, { enabled: true, approx: false, netCartTotals: false, rateFor: () => 0.23, ...opts });
+  return new PriceReplacer(document, {
+    enabled: true,
+    approx: false,
+    netCartTotals: false,
+    taxName: "VAT",
+    rateFor: () => 0.23,
+    ...opts,
+  });
 }
 
 beforeEach(() => {
@@ -106,41 +113,31 @@ describe("note", () => {
     byProduct: new Map(),
     exact: true,
     source: "pledge",
+    taxName: "VAT",
     locationName: "Portugal",
     netCartTotals: false,
   };
   const note = () => document.querySelector<HTMLButtonElement>(".gfvat-note");
 
   test("texts", () => {
-    expect(noteText({ kind: "rate", vat }, true)?.text).toBe("prices incl. 23% VAT");
-    expect(noteText({ kind: "rate", vat: { ...vat, exact: false, source: "orders" } }, true)?.text).toBe(
-      "prices incl. ≈23% VAT",
-    );
-    expect(noteText({ kind: "rate", vat }, false)?.text).toBe("prices excl. VAT");
-    expect(noteText({ kind: "none", reason: "unknown", locationName: "Canada" }, true)).toMatchObject({
-      text: "prices excl. VAT (rate unknown)",
-      clickable: false,
+    expect(noteText(vat, true).text).toBe("prices incl. 23% VAT");
+    expect(noteText({ ...vat, exact: false, source: "orders" }, true).text).toBe("prices incl. ≈23% VAT");
+    expect(noteText(vat, false).text).toBe("prices excl. VAT");
+    expect(noteText({ ...vat, rate: 0.0725, taxName: "Sales Tax", locationName: "California" }, true)).toMatchObject({
+      text: "prices incl. 7.25% Sales Tax",
+      title: expect.stringContaining("7.25% Sales Tax for California"),
     });
-    expect(noteText({ kind: "none", reason: "no-tax", locationName: "" }, true)).toBeNull();
   });
 
   test("sits in the delivery bar, once, and toggles on click", () => {
     let clicks = 0;
-    const res: Resolution = { kind: "rate", vat };
-    ensureNote(document, noteText(res, true), () => clicks++);
-    ensureNote(document, noteText(res, true), () => clicks++);
+    ensureNote(document, noteText(vat, true), () => clicks++);
+    ensureNote(document, noteText(vat, true), () => clicks++);
     expect(document.querySelectorAll(".gfvat-note")).toHaveLength(1);
     expect(note()?.parentElement?.getAttribute("data-qa")).toBe("delivery-to:LocationBar");
     expect(note()?.title).toContain("from your pledge on this project");
     note()!.click();
     expect(clicks).toBe(1);
-  });
-
-  test("a note that is not clickable does nothing", () => {
-    let clicks = 0;
-    ensureNote(document, noteText({ kind: "none", reason: "unknown", locationName: "" }, true), () => clicks++);
-    note()!.click();
-    expect(clicks).toBe(0);
   });
 });
 

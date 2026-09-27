@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { createLearnedLookup, learnRates, MAX_AGE_MS, type LearnedCache } from "../src/learned";
+import { createLearnedLookup, learnRates, MAX_AGE_MS, MAX_ORDERS, type LearnedCache } from "../src/learned";
 import type { OrderDetails, TaxInfo } from "../src/types";
 import { AZORES, PORTUGAL, fakeApi } from "./fake-api";
 
@@ -34,6 +34,19 @@ function historyApi() {
 describe("learnRates", () => {
   test("most common standard rate per location", async () => {
     expect(await learnRates(historyApi())).toEqual({ "PT|Portugal": 0.23, "PT|Portugal (Azores)": 0.16 });
+  });
+
+  test(`reads only the ${MAX_ORDERS} most recent orders`, async () => {
+    const pledges = Array.from({ length: 30 }, (_, i) => ({
+      projectID: i,
+      // Listed oldest first, so taking the list's head would read the wrong ones.
+      createdAt: new Date(Date.UTC(2020, 0, 1 + i)).toISOString(),
+      yourPledgeUrl: `/p/yourpledge?orderCode=${i >= 20 ? "A" : "C"}`,
+    }));
+    const api = fakeApi({ backerPledges: async () => pledges, orderDetails: async (_id, code) => orders[code]! });
+    // The 10 newest are all 23% orders; the 20 older 0% ones are never read.
+    expect(await learnRates(api)).toEqual({ "PT|Portugal": 0.23 });
+    expect(api.calls.filter((c) => c === "orderDetails")).toHaveLength(MAX_ORDERS);
   });
 
   test("one unreadable order does not lose the others", async () => {

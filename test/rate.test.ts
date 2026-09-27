@@ -11,7 +11,7 @@ describe("resolveVat", () => {
     const res = await resolveVat(3850, api, noLearned);
     expect(res).toMatchObject({
       kind: "rate",
-      vat: { rate: 0.23, exact: true, source: "pledge", locationName: "Portugal", netCartTotals: false },
+      vat: { rate: 0.23, exact: true, source: "pledge", taxName: "VAT", locationName: "Portugal", netCartTotals: false },
     });
     if (res.kind === "rate") expect(res.vat.byProduct.get(66862)).toBe(0.23);
     // The exact path never needs the location list or past orders.
@@ -25,7 +25,20 @@ describe("resolveVat", () => {
         throw new Error("401");
       },
     });
-    expect(await resolveVat(3850, api, noLearned)).toMatchObject({ kind: "rate", vat: { rate: 0.23, exact: true } });
+    expect(await resolveVat(3850, api, noLearned)).toMatchObject({
+      kind: "rate",
+      vat: { rate: 0.23, exact: true, taxName: "tax" },
+    });
+  });
+
+  test("pledged: uses Gamefound's own name for the tax", async () => {
+    const api = fakeApi({
+      cartSummary: async () => fixtures.summaryPledged,
+      cartDetails: async () => ({
+        cart: { handleTax: true, taxName: "Sales Tax", taxInfos: [{ taxRateType: 0, taxRate: 0.0725 }] },
+      }),
+    });
+    expect(await resolveVat(3850, api, noLearned)).toMatchObject({ vat: { rate: 0.0725, taxName: "Sales Tax" } });
   });
 
   test("no pledge: rate learned from past orders wins over the table", async () => {
@@ -37,7 +50,7 @@ describe("resolveVat", () => {
   test("no pledge, no past orders: table", async () => {
     expect(await resolveVat(3850, fakeApi(), noLearned)).toMatchObject({
       kind: "rate",
-      vat: { rate: 0.23, exact: false, source: "table", locationName: "Portugal" },
+      vat: { rate: 0.23, exact: false, source: "table", taxName: "VAT", locationName: "Portugal" },
     });
   });
 

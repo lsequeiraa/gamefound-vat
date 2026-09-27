@@ -34,6 +34,8 @@ export interface ReplacerOptions {
   enabled: boolean;
   approx: boolean;
   netCartTotals: boolean;
+  /** Replaces the mini-cart's "+tax" label: "incl. VAT". */
+  taxName: string;
   rateFor(el: Element): number;
 }
 
@@ -62,7 +64,7 @@ export class PriceReplacer {
         for (const node of textNodes(el)) {
           if (seen.has(node) || !node.nodeValue?.trim()) continue;
           seen.add(node);
-          this.write(node, () => "incl. VAT");
+          this.write(node, () => `incl. ${this.opts.taxName}`);
         }
       }
     }

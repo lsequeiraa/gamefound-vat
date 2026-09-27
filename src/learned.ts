@@ -1,6 +1,6 @@
 import type { Api } from "./api";
 import { locationKey, modeRate, standardRate, type LearnedLookup } from "./rate";
-import type { ProjectLocation } from "./types";
+import type { BackerPledge, ProjectLocation } from "./types";
 
 export interface LearnedCache {
   fetchedAt: number;
@@ -14,16 +14,22 @@ export interface LearnedStore {
 }
 
 export const MAX_AGE_MS = 24 * 60 * 60 * 1000;
+/** Keeps the daily refresh to a handful of requests, however many projects you backed. */
+export const MAX_ORDERS = 10;
 
 /**
- * Reads the standard VAT rate Gamefound charged on each of your orders and
+ * Reads the standard VAT rate Gamefound charged on your most recent orders and
  * keeps the most common one per delivery location.
  */
 export async function learnRates(api: Api): Promise<Record<string, number>> {
   const samples = new Map<string, number[]>();
   const locationsByProject = new Map<number, ProjectLocation[]>();
 
-  for (const pledge of await api.backerPledges()) {
+  const created = (p: BackerPledge) => Date.parse(p.createdAt ?? "") || 0;
+  // Newest first; Array.prototype.sort is stable, so undated pledges keep the list's order.
+  const recent = (await api.backerPledges()).sort((a, b) => created(b) - created(a)).slice(0, MAX_ORDERS);
+
+  for (const pledge of recent) {
     const orderCode = new URL(pledge.yourPledgeUrl, "https://gamefound.com").searchParams.get("orderCode");
     if (!orderCode) continue;
     try {

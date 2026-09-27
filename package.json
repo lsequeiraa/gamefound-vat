@@ -1,16 +1,18 @@
 {
   "name": "gamefound-vat",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Browser extension that shows Gamefound reward and add-on prices including the VAT for your delivery country.",
+  "description": "VAT Included for Gamefound: a browser extension that shows Gamefound prices with the VAT for your delivery country included.",
+  "license": "MIT",
+  "packageManager": "bun@1.3.13",
   "scripts": {
     "build": "bun run scripts/build.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
-    "lint": "bun run build && web-ext lint --source-dir dist",
-    "package": "bun run build && web-ext build --source-dir dist --artifacts-dir artifacts --overwrite-dest",
-    "firefox": "bun run build && web-ext run --source-dir dist"
+    "lint": "bun run build && web-ext lint --source-dir dist/firefox",
+    "package": "bun run build && bun run scripts/package.ts",
+    "firefox": "bun run build && web-ext run --source-dir dist/firefox"
   },
   "devDependencies": {
     "@happy-dom/global-registrator": "^20.14.5",

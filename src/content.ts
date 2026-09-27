@@ -20,22 +20,22 @@ async function main(): Promise<void> {
     console.debug("[gamefound-vat]", error);
     return;
   }
-  if (resolution.kind === "none" && resolution.reason === "no-tax") return;
+  // No tax on this project, or no rate known for the location: change nothing.
+  if (resolution.kind === "none") return;
+  const { vat } = resolution;
 
   let enabled = await getEnabled();
-  const vat = resolution.kind === "rate" ? resolution.vat : null;
-  const replacer = vat
-    ? new PriceReplacer(document, {
-        enabled,
-        approx: !vat.exact,
-        netCartTotals: vat.netCartTotals,
-        rateFor: (el) => vat.byProduct.get(productIdFor(el) ?? -1) ?? vat.rate,
-      })
-    : null;
+  const replacer = new PriceReplacer(document, {
+    enabled,
+    approx: !vat.exact,
+    netCartTotals: vat.netCartTotals,
+    taxName: vat.taxName,
+    rateFor: (el) => vat.byProduct.get(productIdFor(el) ?? -1) ?? vat.rate,
+  });
 
   const render = () => {
-    replacer?.apply();
-    ensureNote(document, noteText(resolution, enabled), () => void setEnabled(!enabled));
+    replacer.apply();
+    ensureNote(document, noteText(vat, enabled), () => void setEnabled(!enabled));
   };
 
   // The site re-renders prices on its own (popups, currency changes); follow it.
@@ -52,7 +52,7 @@ async function main(): Promise<void> {
 
   onEnabledChange((value) => {
     enabled = value;
-    replacer?.setEnabled(value);
+    replacer.setEnabled(value);
     render();
   });
 

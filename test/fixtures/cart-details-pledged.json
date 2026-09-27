@@ -4,6 +4,7 @@
   "data": {
     "cart": {
       "handleTax": true,
+      "taxName": "VAT",
       "taxInfos": [
         {
           "netValue": 546,

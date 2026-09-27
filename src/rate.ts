@@ -12,6 +12,8 @@ export interface Vat {
   /** True when the rate comes from Gamefound for this project, false for estimates. */
   exact: boolean;
   source: Source;
+  /** Gamefound's own name for the tax when exact ("VAT", a US sales tax…), else "VAT". */
+  taxName: string;
   locationName: string;
   /** The mini-cart totals exclude tax (the site labels them "+tax"). */
   netCartTotals: boolean;
@@ -81,7 +83,8 @@ export async function resolveVat(projectID: number, api: Api, learned: LearnedLo
     const details = await api.cartDetails(projectID).catch(() => null);
     const exact = exactFromCart(cart.orderItems ?? [], details?.cart.taxInfos ?? null);
     if (exact) {
-      return { kind: "rate", vat: { ...exact, exact: true, source: "pledge", locationName, netCartTotals } };
+      const taxName = details?.cart.taxName?.trim() || "tax";
+      return { kind: "rate", vat: { ...exact, exact: true, source: "pledge", taxName, locationName, netCartTotals } };
     }
   }
 
@@ -93,7 +96,15 @@ export async function resolveVat(projectID: number, api: Api, learned: LearnedLo
 
   const estimate = (rate: number, source: Source): Resolution => ({
     kind: "rate",
-    vat: { rate, byProduct: new Map(), exact: false, source, locationName: locationName || loc.name, netCartTotals },
+    vat: {
+      rate,
+      byProduct: new Map(),
+      exact: false,
+      source,
+      taxName: "VAT",
+      locationName: locationName || loc.name,
+      netCartTotals,
+    },
   });
   const fromOrders = await learned(locationKey(loc)).catch(() => null);
   if (fromOrders != null) return estimate(fromOrders, "orders");

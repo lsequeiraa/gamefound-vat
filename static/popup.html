@@ -2,18 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Gamefound VAT</title>
+    <title>VAT Included for Gamefound</title>
     <style>
       :root { color-scheme: light dark; }
       body { margin: 0; padding: 12px 14px; width: 260px; font: 13px/1.4 system-ui, sans-serif; }
       label { display: flex; gap: 8px; align-items: center; font-weight: 600; cursor: pointer; }
       input { margin: 0; width: 16px; height: 16px; accent-color: #1a9e5c; }
       p { margin: 8px 0 0; opacity: .75; }
+      .small { font-size: 11px; }
     </style>
   </head>
   <body>
     <label><input id="enabled" type="checkbox" /> Show prices incl. VAT</label>
     <p>Reward and add-on prices on Gamefound include the VAT for your delivery country. “≈” marks an estimated rate.</p>
+    <p class="small">Unofficial, not affiliated with Gamefound.</p>
     <script src="popup.js"></script>
   </body>
 </html>

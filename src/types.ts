@@ -32,6 +32,8 @@ export interface CartDetails {
   cart: {
     handleTax: boolean;
     taxInfos: TaxInfo[] | null;
+    /** What Gamefound calls the tax for this location, e.g. "VAT". */
+    taxName?: string | null;
   };
 }
 
@@ -46,6 +48,7 @@ export interface ProjectLocation {
 export interface BackerPledge {
   projectID: number;
   yourPledgeUrl: string;
+  createdAt?: string | null;
 }
 
 export interface BackerPledgesPage {
