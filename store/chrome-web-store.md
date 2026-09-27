@@ -66,6 +66,7 @@ The extension only runs on gamefound.com. It rewrites the prices shown on Gamefo
 **Data usage**: tick these (the data is read and used only inside the browser, but Chrome asks for local handling to be disclosed too):
 
 - [x] Financial and payment information: the tax rates on the user's Gamefound cart and recent orders
+- [x] Location: the delivery country, stored with the rate learned for it
 - [x] Website content: prices on Gamefound pages
 
 and certify all three statements (not sold to third parties; not used for unrelated purposes; not used for creditworthiness or lending).
