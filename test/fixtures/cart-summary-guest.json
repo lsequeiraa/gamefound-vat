@@ -1,0 +1,17 @@
+{
+  "cart": {
+    "cart": {
+      "hasTaxHandlingEnabled": true,
+      "hasTaxInfoDefined": false,
+      "orderItems": []
+    }
+  },
+  "userPreferredLocation": {
+    "isReadOnly": false,
+    "locationName": "Portugal",
+    "projectLocationID": 982239,
+    "projectSubLocationID": null,
+    "systemLocationID": 33,
+    "systemSubLocationID": null
+  }
+}

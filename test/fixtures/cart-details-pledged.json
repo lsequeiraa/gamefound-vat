@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "message": null,
+  "data": {
+    "cart": {
+      "handleTax": true,
+      "taxInfos": [
+        {
+          "netValue": 546,
+          "taxRate": 0.23,
+          "taxRateType": 0,
+          "taxValue": 125.58
+        },
+        {
+          "netValue": 0,
+          "taxRate": 0.06,
+          "taxRateType": 1,
+          "taxValue": 0
+        },
+        {
+          "netValue": 0,
+          "taxRate": 0.06,
+          "taxRateType": 2,
+          "taxValue": 0
+        },
+        {
+          "netValue": 0,
+          "taxRate": null,
+          "taxRateType": 3,
+          "taxValue": 0
+        },
+        {
+          "netValue": 0,
+          "taxRate": null,
+          "taxRateType": 4,
+          "taxValue": 0
+        }
+      ]
+    }
+  }
+}

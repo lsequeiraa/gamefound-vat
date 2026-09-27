@@ -1,0 +1,174 @@
+[
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": false,
+    "name": "Afghanistan",
+    "projectID": 3850,
+    "projectLocationEuCode": null,
+    "projectLocationID": 982265,
+    "projectLocationIsoCode": "AF",
+    "subLocations": [],
+    "taxRegulation": 0
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": false,
+    "name": "Canada",
+    "projectID": 3850,
+    "projectLocationEuCode": null,
+    "projectLocationID": 982375,
+    "projectLocationIsoCode": "CA",
+    "subLocations": [
+      {
+        "name": "Alberta",
+        "projectSubLocationID": 277916
+      },
+      {
+        "name": "British Columbia",
+        "projectSubLocationID": 277917
+      }
+    ],
+    "taxRegulation": 0
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": true,
+    "name": "Germany",
+    "projectID": 3850,
+    "projectLocationEuCode": "DE",
+    "projectLocationID": 982221,
+    "projectLocationIsoCode": "DE",
+    "subLocations": [],
+    "taxRegulation": 1
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": true,
+    "name": "Greece",
+    "projectID": 3850,
+    "projectLocationEuCode": "EL",
+    "projectLocationID": 982223,
+    "projectLocationIsoCode": "GR",
+    "subLocations": [],
+    "taxRegulation": 1
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": false,
+    "name": "Isle of Man",
+    "projectID": 3850,
+    "projectLocationEuCode": null,
+    "projectLocationID": 982227,
+    "projectLocationIsoCode": "GB",
+    "subLocations": [],
+    "taxRegulation": 2
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": true,
+    "name": "Monaco",
+    "projectID": 3850,
+    "projectLocationEuCode": null,
+    "projectLocationID": 982234,
+    "projectLocationIsoCode": "MC",
+    "subLocations": [],
+    "taxRegulation": 1
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": false,
+    "name": "Northern Ireland",
+    "projectID": 3850,
+    "projectLocationEuCode": "XI",
+    "projectLocationID": 982236,
+    "projectLocationIsoCode": "GB",
+    "subLocations": [],
+    "taxRegulation": 1
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": false,
+    "name": "Poland",
+    "projectID": 3850,
+    "projectLocationEuCode": "PL",
+    "projectLocationID": 982207,
+    "projectLocationIsoCode": "PL",
+    "subLocations": [],
+    "taxRegulation": 1
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": true,
+    "name": "Portugal",
+    "projectID": 3850,
+    "projectLocationEuCode": "PT",
+    "projectLocationID": 982239,
+    "projectLocationIsoCode": "PT",
+    "subLocations": [],
+    "taxRegulation": 1
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": true,
+    "name": "Portugal (Azores)",
+    "projectID": 3850,
+    "projectLocationEuCode": "PT",
+    "projectLocationID": 982260,
+    "projectLocationIsoCode": "PT",
+    "subLocations": [],
+    "taxRegulation": 1
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": true,
+    "name": "Portugal (Madeira)",
+    "projectID": 3850,
+    "projectLocationEuCode": "PT",
+    "projectLocationID": 982261,
+    "projectLocationIsoCode": "PT",
+    "subLocations": [],
+    "taxRegulation": 1
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": false,
+    "name": "Switzerland",
+    "projectID": 3850,
+    "projectLocationEuCode": null,
+    "projectLocationID": 982257,
+    "projectLocationIsoCode": "CH",
+    "subLocations": [],
+    "taxRegulation": 0
+  },
+  {
+    "collectFullAddress": false,
+    "enableVatReverse": true,
+    "name": "United Kingdom (excl. Northern Ireland)",
+    "projectID": 3850,
+    "projectLocationEuCode": "GB",
+    "projectLocationID": 982262,
+    "projectLocationIsoCode": "GB",
+    "subLocations": [],
+    "taxRegulation": 2
+  },
+  {
+    "collectFullAddress": true,
+    "enableVatReverse": false,
+    "name": "United States",
+    "projectID": 3850,
+    "projectLocationEuCode": null,
+    "projectLocationID": 982372,
+    "projectLocationIsoCode": "US",
+    "subLocations": [
+      {
+        "name": "Alabama",
+        "projectSubLocationID": 277847
+      },
+      {
+        "name": "Alaska",
+        "projectSubLocationID": 277848
+      }
+    ],
+    "taxRegulation": 0
+  }
+]

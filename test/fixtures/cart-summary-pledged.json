@@ -1,0 +1,46 @@
+{
+  "cart": {
+    "cart": {
+      "hasTaxHandlingEnabled": true,
+      "hasTaxInfoDefined": true,
+      "orderItems": [
+        {
+          "productID": 66862,
+          "displayName": "Hero of Evershade Pledge",
+          "netPrice": 290,
+          "price": 356.7,
+          "taxRate": 0.23
+        },
+        {
+          "productID": 66853,
+          "displayName": "New Adventure: Rotlands Crusade",
+          "netPrice": 37,
+          "price": 45.51,
+          "taxRate": 0.23
+        },
+        {
+          "productID": null,
+          "displayName": "Shipping fee",
+          "netPrice": 43,
+          "price": 52.89,
+          "taxRate": 0.23
+        },
+        {
+          "productID": null,
+          "displayName": "Shipping fee",
+          "netPrice": 23,
+          "price": 28.29,
+          "taxRate": 0.23
+        }
+      ]
+    }
+  },
+  "userPreferredLocation": {
+    "isReadOnly": true,
+    "locationName": "Portugal",
+    "projectLocationID": 982239,
+    "projectSubLocationID": null,
+    "systemLocationID": 33,
+    "systemSubLocationID": null
+  }
+}

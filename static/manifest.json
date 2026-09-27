@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Gamefound VAT",
+  "version": "0.0.0",
+  "description": "Shows Gamefound reward and add-on prices including the VAT for your delivery country.",
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": ["https://gamefound.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Gamefound VAT",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png"
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "gamefound-vat@lsequeira",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
+    }
+  }
+}
