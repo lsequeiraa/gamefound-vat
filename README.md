@@ -1,5 +1,8 @@
 # VAT Included for Gamefound
 
+[![Firefox](https://img.shields.io/amo/v/vat-included-for-gamefound?label=Firefox)](https://addons.mozilla.org/firefox/addon/vat-included-for-gamefound/)
+[![Chrome](https://img.shields.io/chrome-web-store/v/daphjimleehgiadinjjmjlpcekfkfhag?label=Chrome)](https://chromewebstore.google.com/detail/daphjimleehgiadinjjmjlpcekfkfhag)
+
 A browser extension for Firefox and Chrome that shows Gamefound reward and add-on prices **with the VAT for your delivery country included**. Unofficial and not affiliated with Gamefound.
 
 ![Reward prices with VAT included](store/screenshot-2.jpg)
@@ -27,8 +30,8 @@ Everything happens in your browser; nothing is sent anywhere. See [PRIVACY.md](P
 
 ## Install
 
-- **Firefox:** addons.mozilla.org (link once published).
-- **Chrome:** Chrome Web Store (link once published).
+- **Firefox:** [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/vat-included-for-gamefound/)
+- **Chrome:** [Chrome Web Store](https://chromewebstore.google.com/detail/daphjimleehgiadinjjmjlpcekfkfhag)
 - **From a release:** download the zip for your browser from [Releases](https://github.com/lsequeiraa/gamefound-vat/releases). In Chrome, unzip it and use *Load unpacked* in `chrome://extensions` (Developer mode). In Firefox, `about:debugging#/runtime/this-firefox` → *Load Temporary Add-on* loads it until Firefox restarts.
 
 ## Build from source
